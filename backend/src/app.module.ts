@@ -9,6 +9,7 @@ import { OrdersModule } from './orders/orders.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { ErrorInterceptor } from './common/interceptors/error.interceptor';
 
 @Module({
   imports: [
@@ -37,6 +38,10 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
     {
       provide: APP_INTERCEPTOR,
       useClass: ResponseInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorInterceptor,
     },
   ],
 })
