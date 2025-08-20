@@ -1,0 +1,14 @@
+<div class="home-container">
+  <h1>Welcome to MyStore</h1>
+
+  <div *ngIf="!loggedIn" class="home-action">
+    <p>Please login or register to start shopping.</p>
+    <a routerLink="/login" class="btn">Login</a>
+    <a routerLink="/register" class="btn btn-outline">Register</a>
+  </div>
+
+  <div *ngIf="loggedIn" class="home-action">
+    <p>Explore products and check your cart/orders!</p>
+    <a routerLink="/products" class="btn">Go to Products</a>
+  </div>
+</div>

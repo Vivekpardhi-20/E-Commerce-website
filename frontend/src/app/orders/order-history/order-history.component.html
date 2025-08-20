@@ -1,0 +1,45 @@
+<section class="order-history-container">
+  <h2>Your Orders</h2>
+
+  <div *ngIf="loading" class="loading">Loading your orders...</div>
+
+  <div *ngIf="!loading && orders.length === 0" class="empty-orders">
+    <p>You have no past orders.</p>
+    <a routerLink="/products" class="btn">Shop Now</a>
+  </div>
+
+  <div *ngIf="!loading && orders.length > 0">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <h3>Order #{{ order.id }}</h3>
+        <span class="status" [ngClass]="order.status">{{ order.status | titlecase }}</span>
+      </div>
+      <p><strong>Placed on:</strong> {{ order.createdAt | date:'medium' }}</p>
+      <p><strong>Shipping Address:</strong> {{ order.addressLine1 }}, {{ order.addressLine2 }}, {{ order.city }}, {{ order.state }} - {{ order.postalCode }}</p>
+      <p><strong>Payment Method:</strong> {{ order.paymentMethod }}</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.items">
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.unitPrice }}</td>
+            <td>₹{{ item.lineTotal }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="order-total">
+        <strong>Order Total: ₹{{ order.total }}</strong>
+      </div>
+    </div>
+  </div>
+</section>

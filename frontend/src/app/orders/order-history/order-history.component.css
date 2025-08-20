@@ -1,0 +1,127 @@
+.order-history-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 1rem 2rem 3rem;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.order-history-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1356a2; /* dark blue */
+}
+
+.loading {
+  text-align: center;
+  color: #C4D7FF;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 2rem 0;
+}
+
+.empty-orders {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.empty-orders .btn {
+  background: #87A2FF;
+  color: white;
+  padding: 0.7rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.3s;
+}
+
+.empty-orders .btn:hover {
+  background: #C4D7FF;
+}
+
+.order-card {
+  background: #FFD7C4; /* peach background */
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #C4D7FF;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.order-header h3 {
+  margin: 0;
+  color: #1356a2;
+}
+
+.status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* Example status colors - adjust or extend as needed */
+.status.Pending {
+  background-color: #f0ad4e; /* orange */
+}
+.status.Shipped {
+  background-color: #5bc0de; /* light blue */
+}
+.status.Delivered {
+  background-color: #5cb85c; /* green */
+}
+.status.Cancelled {
+  background-color: #d9534f; /* red */
+}
+
+.order-card p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.order-card table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.order-card th,
+.order-card td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #C4D7FF;
+  text-align: left;
+}
+
+.order-card th {
+  background: #87A2FF;
+  color: white;
+  font-weight: 700;
+}
+
+.order-card td {
+  font-weight: 600;
+  color: #333;
+}
+
+.order-total {
+  text-align: right;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #87A2FF;
+  margin-top: 0.5rem;
+}

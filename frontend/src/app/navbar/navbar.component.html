@@ -1,0 +1,17 @@
+<nav class="navbar">
+  <a routerLink="/" class="logo">MyStore</a>
+
+  <ul class="nav-links">
+    <li *ngIf="isLoggedIn"><a routerLink="/">Home</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/products">Products</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/cart">Cart</a></li>
+    <li *ngIf="isLoggedIn"><a routerLink="/orders">Orders</a></li>
+  </ul>
+
+  <div class="auth-buttons">
+    <span *ngIf="isLoggedIn">{{ username }}</span>
+    <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login">Login</a>
+    <a *ngIf="!isLoggedIn" routerLink="/register">Register</a>
+  </div>
+</nav>

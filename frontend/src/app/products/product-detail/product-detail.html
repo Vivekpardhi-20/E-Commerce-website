@@ -1,0 +1,24 @@
+
+<section class="product-detail-section compact" *ngIf="!loading; else loadingTpl">
+  <div class="compact-card">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="compact-image" />
+    <div class="compact-info">
+      <div class="compact-title">{{ product.name }}</div>
+      <div class="compact-price">₹{{ product.price }}</div>
+      <div class="compact-stock" [class.out]="product.stock === 0">
+        {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+      </div>
+      <div class="compact-desc">{{ product.description }}</div>
+      <div class="quantity-group" *ngIf="product.stock > 0">
+        <label for="quantity">Quantity:</label>
+  <input id="quantity" type="number" [(ngModel)]="quantity" min="1" [max]="maxQuantity" />
+  <span class="max-info">(Max: {{ maxQuantity }})</span>
+      </div>
+      <button class="compact-btn" (click)="addToCart(product)" [disabled]="product.stock === 0">Add to Cart</button>
+    </div>
+  </div>
+</section>
+
+<ng-template #loadingTpl>
+  <p class="loading">Loading product details...</p>
+</ng-template>

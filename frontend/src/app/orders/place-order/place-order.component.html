@@ -1,0 +1,58 @@
+<div class="checkout-container">
+  <h2>Place Order</h2>
+
+  <!-- Cart Summary -->
+  <div class="cart-summary" *ngIf="cart?.items?.length">
+    <h3>Order Summary</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart.items">
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.product.price }}</td>
+          <td>₹{{ item.product.price * item.quantity }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="grand-total">
+      <strong>Grand Total: ₹{{ cart.total }}</strong>
+    </div>
+  </div>
+
+  <!-- Shipping Address Form -->
+  <div class="address-form">
+    <h3>Shipping Address</h3>
+    <form (ngSubmit)="placeOrder()" #checkoutForm="ngForm">
+      <label>Address Line 1 *</label>
+      <input type="text" [(ngModel)]="addressLine1" name="addressLine1" required />
+
+      <label>Address Line 2</label>
+      <input type="text" [(ngModel)]="addressLine2" name="addressLine2" />
+
+      <label>City *</label>
+      <input type="text" [(ngModel)]="city" name="city" required />
+
+      <label>State *</label>
+      <input type="text" [(ngModel)]="state" name="state" required />
+
+      <label>Postal Code *</label>
+      <input type="text" [(ngModel)]="postalCode" name="postalCode" required />
+
+      <label>Payment Method</label>
+      <select [(ngModel)]="paymentMethod" name="paymentMethod" required>
+        <option [ngValue]="'COD'">Cash on Delivery</option>
+        <option [ngValue]="'CARD'">Credit/Debit Card</option>
+      </select>
+
+      <button type="submit" [disabled]="!checkoutForm.form.valid">Place Order</button>
+    </form>
+  </div>
+</div>
