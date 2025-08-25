@@ -98,7 +98,10 @@ export class CheckoutComponent implements OnInit {
     this.orderService.createOrder(orderData).subscribe({
       next: () => {
         alert('Order placed successfully!');
-        this.router.navigate(['/orders']);
+        // Refresh cart so it shows as empty after order
+        this.cartService.getCart().subscribe(() => {
+          this.router.navigate(['/orders']);
+        });
       },
       error: (err) => {
         console.error('Place order error:', err);

@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -19,7 +20,7 @@ export class AuthService {
     }
 
 
-    if (user.password !== dto.password) {
+    if (!await bcrypt.compare(dto.password, user.password)) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -35,7 +36,9 @@ export class AuthService {
     const existing = await this.userRepo.findOne({ where: { email: dto.email } });
     if (existing) throw new UnauthorizedException('Email already exists');
 
-    const user = this.userRepo.create(dto);
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const user = this.userRepo.create({ ...dto, password: hashedPassword });
     await this.userRepo.save(user);
 
     const payload = { sub: user.id, email: user.email };

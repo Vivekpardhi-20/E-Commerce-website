@@ -1,27 +1,3 @@
-@media (max-width: 600px) {
-  .product-detail-section.compact {
-    max-width: 99vw;
-    margin: 12px auto;
-    padding: 0 2vw;
-  }
-  .compact-card {
-    padding: 1rem 0.5rem;
-    gap: 0.5rem;
-  }
-  .compact-image {
-    width: 60px;
-    height: 60px;
-  }
-  .compact-title {
-    font-size: 1rem;
-  }
-  .compact-price {
-    font-size: 0.95rem;
-  }
-  .compact-desc {
-    font-size: 0.9rem;
-  }
-}
 .product-detail-section.compact {
   max-width: 350px;
   margin: 32px auto;

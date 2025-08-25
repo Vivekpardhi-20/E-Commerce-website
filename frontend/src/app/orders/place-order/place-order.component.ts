@@ -48,16 +48,14 @@ export class PlaceOrderComponent implements OnInit {
           total: res.data.reduce((sum: number, item: any) => sum + item.product.price * item.quantity, 0)
         };
         this.loading = false;
-        if (res.feildErrors && res.feildErrors.length) {
-          // Optionally show field errors in UI
-          console.error('Field Errors:', res.feildErrors);
+        if (res.fieldErrors && res.fieldErrors.length) {
+          console.error('Field Errors:', res.fieldErrors);
         }
       },
       error: (err) => {
         this.loading = false;
-        if (err.error && err.error.feildErrors) {
-          // Optionally show field errors in UI
-          console.error('Field Errors:', err.error.feildErrors);
+        if (err.error && err.error.fieldErrors) {
+          console.error('Field Errors:', err.error.fieldErrors);
         }
         if (err.status === 401) {
           alert('Session expired. Please login again.');

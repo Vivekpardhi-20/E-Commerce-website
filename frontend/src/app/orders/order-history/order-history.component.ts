@@ -16,22 +16,37 @@ export class OrderHistoryComponent implements OnInit {
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
+    this.fetchOrders();
+  }
+
+  fetchOrders(): void {
     this.orderService.getOrders().subscribe({
       next: (res: any) => {
         this.orders = res.data;
         this.loading = false;
         if (res.feildErrors && res.feildErrors.length) {
-          // Optionally show field errors in UI
           console.error('Field Errors:', res.feildErrors);
         }
       },
       error: (err) => {
         this.loading = false;
         if (err.error && err.error.feildErrors) {
-          // Optionally show field errors in UI
           console.error('Field Errors:', err.error.feildErrors);
         }
         console.error('Failed to fetch orders:', err);
+      }
+    });
+  }
+
+  cancelOrder(orderId: number): void {
+    if (!confirm('Are you sure you want to cancel this order?')) return;
+    this.orderService.cancelOrder(orderId).subscribe({
+      next: (res: any) => {
+        alert('Order cancelled successfully!');
+        this.fetchOrders();
+      },
+      error: (err) => {
+        alert('Failed to cancel order: ' + (err.error?.message || 'Unknown error'));
       }
     });
   }

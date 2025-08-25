@@ -31,26 +31,59 @@
   <div class="address-form">
     <h3>Shipping Address</h3>
     <form (ngSubmit)="placeOrder()" #checkoutForm="ngForm">
-      <label>Address Line 1 *</label>
-      <input type="text" [(ngModel)]="addressLine1" name="addressLine1" required />
+      
+  <label for="addressLine1">Address Line 1 *</label>
+  <input id="addressLine1" type="text" [(ngModel)]="addressLine1" name="addressLine1" required minlength="4" #addressLine1Ref="ngModel" />
+      <div class="error" *ngIf="addressLine1Ref.invalid && addressLine1Ref.touched">
+        <small *ngIf="addressLine1Ref.errors?.['required']">Address Line 1 is required.</small>
+        <small *ngIf="addressLine1Ref.errors?.['minlength']">Minimum 4 characters required.</small>
+      </div>
 
-      <label>Address Line 2</label>
-      <input type="text" [(ngModel)]="addressLine2" name="addressLine2" />
+  <label for="addressLine2">Address Line 2</label>
+  <input id="addressLine2" type="text" [(ngModel)]="addressLine2" name="addressLine2" />
 
-      <label>City *</label>
-      <input type="text" [(ngModel)]="city" name="city" required />
+  <label for="city">City *</label>
+  <input id="city" type="text" [(ngModel)]="city" name="city" required minlength="2" #cityRef="ngModel" />
+      <div class="error" *ngIf="cityRef.invalid && cityRef.touched">
+        <small *ngIf="cityRef.errors?.['required']">City is required.</small>
+        <small *ngIf="cityRef.errors?.['minlength']">Minimum 2 characters required.</small>
+      </div>
 
-      <label>State *</label>
-      <input type="text" [(ngModel)]="state" name="state" required />
+  <label for="state">State *</label>
+  <input id="state" type="text" [(ngModel)]="state" name="state" required minlength="2" #stateRef="ngModel" />
+      <div class="error" *ngIf="stateRef.invalid && stateRef.touched">
+        <small *ngIf="stateRef.errors?.['required']">State is required.</small>
+        <small *ngIf="stateRef.errors?.['minlength']">Minimum 2 characters required.</small>
+      </div>
 
-      <label>Postal Code *</label>
-      <input type="text" [(ngModel)]="postalCode" name="postalCode" required />
+      <!-- ✅ Postal Code Validation -->
+      <label for="postalCode">Postal Code *</label>
+      <input 
+        id="postalCode"
+        type="text" 
+        [(ngModel)]="postalCode" 
+        name="postalCode" 
+        required 
+        pattern="^[0-9]{6}$" 
+        maxlength="6"
+        #postalCtrl="ngModel"
+      />
 
-      <label>Payment Method</label>
-      <select [(ngModel)]="paymentMethod" name="paymentMethod" required>
+      <!-- Error messages -->
+      <div class="error" *ngIf="postalCtrl.invalid && postalCtrl.touched">
+        <small *ngIf="postalCtrl.errors?.['required']">Postal code is required.</small>
+        <small *ngIf="postalCtrl.errors?.['pattern']">Postal code must be exactly 6 digits.</small>
+      </div>
+
+  <label for="paymentMethod">Payment Method</label>
+  <select id="paymentMethod" [(ngModel)]="paymentMethod" name="paymentMethod" required #paymentMethodRef="ngModel">
         <option [ngValue]="'COD'">Cash on Delivery</option>
         <option [ngValue]="'CARD'">Credit/Debit Card</option>
       </select>
+
+      <div class="error" *ngIf="paymentMethodRef.invalid && paymentMethodRef.touched">
+        <small *ngIf="paymentMethodRef.errors?.['required']">Payment method is required.</small>
+      </div>
 
       <button type="submit" [disabled]="!checkoutForm.form.valid">Place Order</button>
     </form>

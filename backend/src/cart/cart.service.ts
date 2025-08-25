@@ -22,7 +22,6 @@ async getCart(userId: number) {
 }
 
 
-  // Add product to cart
   async addToCart(userId: number, productId: number, quantity: number = 1) {
     const user = await this.userRepo.findOneBy({ id: userId });
     if (!user) throw new NotFoundException('User not found');
@@ -43,36 +42,41 @@ async getCart(userId: number) {
     });
 
     if (cartItem) {
-      // Update quantity, but max available stock
       const newQuantity = cartItem.quantity + quantity;
-      if (newQuantity > product.stock + cartItem.quantity) {
-        throw new NotFoundException(`Only ${product.stock + cartItem.quantity} items available in stock.`);
+      if (newQuantity > product.stock) {
+        throw new NotFoundException(`Only ${product.stock} items available in stock.`);
       }
       cartItem.quantity = newQuantity;
     } else {
-  cartItem = this.cartRepo.create({ user, product, quantity });
+      if (quantity > product.stock) {
+        throw new NotFoundException(`Only ${product.stock} items available in stock.`);
+      }
+      cartItem = this.cartRepo.create({ user, product, quantity });
     }
 
-    // Reduce product stock
-  product.stock -= quantity;
-  await this.productRepo.save(product);
+    product.stock -= quantity;
+    await this.productRepo.save(product);
 
     return this.cartRepo.save(cartItem);
   }
 
-  // Update quantity of a cart item
-  async updateCartItem(cartId: number, quantity: number) {
-    const cartItem = await this.cartRepo.findOneBy({ id: cartId });
-    if (!cartItem) throw new NotFoundException('Cart item not found');
-    if (quantity < 1 || quantity > 5) {
-      throw new NotFoundException('You can only buy between 1 and 5 quantities.');
-    }
 
+  async updateCartItem(cartId: number, quantity: number) {
+    const cartItem = await this.cartRepo.findOne({ where: { id: cartId }, relations: ['product'] });
+    if (!cartItem) throw new NotFoundException('Cart item not found');
+    if (quantity < 1) {
+      throw new NotFoundException('You must add at least 1 item.');
+    }
+    const product = await this.productRepo.findOneBy({ id: cartItem.product.id });
+    if (!product) throw new NotFoundException('Product not found');
+    if (quantity > product.stock) {
+      throw new NotFoundException(`Only ${product.stock} items available in stock.`);
+    }
     cartItem.quantity = quantity;
     return this.cartRepo.save(cartItem);
   }
 
-  // Remove item from cart
+ 
   async removeFromCart(cartId: number) {
     const cartItem = await this.cartRepo.findOneBy({ id: cartId });
     if (!cartItem) throw new NotFoundException('Cart item not found');

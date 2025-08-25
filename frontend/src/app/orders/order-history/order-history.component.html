@@ -37,6 +37,10 @@
         </tbody>
       </table>
 
+      <div class="cancel-wrapper" *ngIf="order.status === 'placed'">
+        <button class="cancel-btn" (click)="cancelOrder(order.id)">Cancel Order</button>
+      </div>
+
       <div class="order-total">
         <strong>Order Total: ₹{{ order.total }}</strong>
       </div>

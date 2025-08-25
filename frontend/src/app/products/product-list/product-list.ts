@@ -17,6 +17,15 @@ import { Router } from '@angular/router';
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   loading = true;
+  currentPage = 1;
+  pageSize = 10;
+  get totalPages() {
+    return Math.ceil(this.products.length / this.pageSize);
+  }
+  get paginatedProducts() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.products.slice(start, start + this.pageSize);
+  }
 
   constructor(
     private productService: ProductService,
@@ -39,12 +48,17 @@ export class ProductListComponent implements OnInit {
       next: (res: Product[]) => {
         this.products = res;
         this.loading = false;
+        this.currentPage = 1;
       },
       error: (err: any) => console.error('Error loading products', err)
     });
   }
 
-
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
   addToCart(productId: number, quantity: number = 1) {
     const user = this.auth.getUser();
     if (!user) {

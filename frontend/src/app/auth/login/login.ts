@@ -16,7 +16,12 @@ export class LoginComponent {
   password = '';
   error = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {
+    // Redirect to products if already logged in
+    if (this.auth.getUser()) {
+      this.router.navigate(['/products']);
+    }
+  }
 
   login() {
     this.auth.login(this.email, this.password).subscribe({

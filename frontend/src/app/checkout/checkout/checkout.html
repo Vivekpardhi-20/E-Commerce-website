@@ -1,9 +1,7 @@
-
-
 <section class="checkout-container">
   <h2>Place Your Order</h2>
 
-  <!-- Cart Summary -->
+  <!-- Cart Summary (LEFT) -->
   <div class="cart-summary" *ngIf="cart?.items?.length">
     <h3>Order Summary</h3>
     <div class="cart-items">
@@ -22,37 +20,102 @@
     </div>
   </div>
 
-  <!-- Shipping Form -->
+  <!-- Shipping Form (RIGHT) -->
   <div class="address-form" *ngIf="cart?.items?.length">
     <h3>Shipping Address</h3>
     <form (ngSubmit)="placeOrder()" #checkoutForm="ngForm">
+
+      <!-- Address Line 1 -->
       <div class="form-group">
         <label for="addressLine1">Address Line 1*</label>
-        <input id="addressLine1" type="text" [(ngModel)]="addressLine1" name="addressLine1" placeholder="Address Line 1*" required />
+        <input
+          id="addressLine1"
+          type="text"
+          [(ngModel)]="addressLine1"
+          name="addressLine1"
+          required
+          #addressLine1Ctrl="ngModel"
+        />
+        <div class="error" *ngIf="addressLine1Ctrl.invalid && addressLine1Ctrl.touched">
+          <small>Address Line 1 is required.</small>
+        </div>
       </div>
+
+      <!-- Address Line 2 (Optional) -->
       <div class="form-group">
         <label for="addressLine2">Address Line 2</label>
-        <input id="addressLine2" type="text" [(ngModel)]="addressLine2" name="addressLine2" placeholder="Address Line 2" />
+        <input id="addressLine2" type="text" [(ngModel)]="addressLine2" name="addressLine2" />
       </div>
+
+      <!-- City -->
       <div class="form-group">
         <label for="city">City*</label>
-        <input id="city" type="text" [(ngModel)]="city" name="city" placeholder="City*" required />
+        <input
+          id="city"
+          type="text"
+          [(ngModel)]="city"
+          name="city"
+          required
+          #cityCtrl="ngModel"
+        />
+        <div class="error" *ngIf="cityCtrl.invalid && cityCtrl.touched">
+          <small>City is required.</small>
+        </div>
       </div>
+
+      <!-- State -->
       <div class="form-group">
         <label for="state">State*</label>
-        <input id="state" type="text" [(ngModel)]="state" name="state" placeholder="State*" required />
+        <input
+          id="state"
+          type="text"
+          [(ngModel)]="state"
+          name="state"
+          required
+          #stateCtrl="ngModel"
+        />
+        <div class="error" *ngIf="stateCtrl.invalid && stateCtrl.touched">
+          <small>State is required.</small>
+        </div>
       </div>
+
+      <!-- Postal Code -->
       <div class="form-group">
         <label for="postalCode">Postal Code*</label>
-        <input id="postalCode" type="text" [(ngModel)]="postalCode" name="postalCode" placeholder="Postal Code*" required />
+        <input
+          id="postalCode"
+          type="text"
+          [(ngModel)]="postalCode"
+          name="postalCode"
+          required
+          pattern="^[0-9]{6}$"
+          #postalCodeCtrl="ngModel"
+        />
+        <div class="error" *ngIf="postalCodeCtrl.invalid && postalCodeCtrl.touched">
+          <small *ngIf="postalCodeCtrl.errors?.['required']">Postal code is required.</small>
+          <small *ngIf="postalCodeCtrl.errors?.['pattern']">Postal code must be exactly 6 digits.</small>
+        </div>
       </div>
+
+      <!-- Payment Method -->
       <div class="form-group">
         <label for="paymentMethod">Payment Method*</label>
-        <select id="paymentMethod" [(ngModel)]="paymentMethod" name="paymentMethod" required>
+        <select
+          id="paymentMethod"
+          [(ngModel)]="paymentMethod"
+          name="paymentMethod"
+          required
+          #paymentMethodCtrl="ngModel"
+        >
           <option value="COD">Cash on Delivery</option>
           <option value="CARD">Credit/Debit Card</option>
         </select>
+        <div class="error" *ngIf="paymentMethodCtrl.invalid && paymentMethodCtrl.touched">
+          <small>Payment method is required.</small>
+        </div>
       </div>
+
+      <!-- Submit Button -->
       <button type="submit" [disabled]="!checkoutForm.form.valid">Place Order</button>
     </form>
   </div>

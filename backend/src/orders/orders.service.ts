@@ -17,19 +17,23 @@ export class OrdersService {
     @InjectRepository(Cart) private cartRepo: Repository<Cart>,
   ) {}
 
-  async checkout(user: User, dto: CheckoutDto) {
+  async checkout(user: any, dto: CheckoutDto) {
     return this.dataSource.transaction(async (manager) => {
   
-      const dbUser = await manager.findOne(User, { where: { id: user.id } });
-      if (!dbUser) throw new BadRequestException('User not found');
+  // Always use user.userId from JWT payload
+  const dbUser = await manager.findOne(User, { where: { id: user.userId } });
+  if (!dbUser) throw new BadRequestException('User not found');
 
-const cartItems = await manager.find(Cart, {
-  where: { user: { id: dbUser.id } },
-  relations: ['product'],
-});
-if (!cartItems.length) {
-  throw new BadRequestException('Cart is empty');
-}
+  // Find all cart items for the user
+  const cartItems = await manager.find(Cart, {
+    where: { user: { id: dbUser.id } },
+    relations: ['product'],
+  });
+  // Logging removed
+  if (!cartItems.length) {
+    throw new BadRequestException('Cart is empty');
+  }
+  // ...existing code...
 
 
       const order = manager.create(Order, {
@@ -44,6 +48,7 @@ if (!cartItems.length) {
         total: 0,
       });
       const savedOrder = await manager.save(order);
+  // Logging removed
 
       let total = 0;
       const orderItems: OrderItem[] = cartItems.map(ci => {
@@ -63,7 +68,8 @@ if (!cartItems.length) {
       await manager.save(savedOrder);
 
   
-      await manager.remove(cartItems);
+  await manager.remove(cartItems);
+  // Logging removed
 
       return savedOrder;
     });
@@ -75,5 +81,18 @@ if (!cartItems.length) {
       relations: ['items', 'items.product'],
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async cancelOrder(userId: number, orderId: number) {
+    const order = await this.orderRepo.findOne({ where: { id: orderId, user: { id: userId } } });
+    if (!order) {
+      throw new BadRequestException('Order not found');
+    }
+    if (order.status !== 'placed') {
+      throw new BadRequestException('Only placed orders can be cancelled');
+    }
+    order.status = 'cancelled';
+    await this.orderRepo.save(order);
+    return order;
   }
 }

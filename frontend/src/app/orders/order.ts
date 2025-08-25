@@ -25,16 +25,19 @@ export class OrderService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
-  // Create a new order (checkout)
   createOrder(data: CheckoutData): Observable<any> {
     return this.http.post(`${this.apiUrl}/checkout`, data, {
       headers: this.getAuthHeaders(),
     });
   }
 
-  // Fetch orders for the logged-in user
   getOrders(): Observable<any> {
-    // Just call /orders; backend gets userId from JWT
     return this.http.get(`${this.apiUrl}`, { headers: this.getAuthHeaders() });
+  }
+
+  cancelOrder(orderId: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cancel/${orderId}`, {}, {
+      headers: this.getAuthHeaders(),
+    });
   }
 }

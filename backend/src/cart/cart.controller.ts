@@ -18,12 +18,12 @@ export class CartController {
 
 @Post('add')
 async addToCart(@Req() req: any, @Body() body: AddCartDto) {
-  return this.cartService.addToCart(req.user.id, body.productId, body.quantity);
+  return this.cartService.addToCart(req.user.userId, body.productId, body.quantity);
 }
 
 @Get()
 async getCart(@Req() req: any) {
-  return this.cartService.getCart(req.user.id);
+  return this.cartService.getCart(req.user.userId);
 }
 
 

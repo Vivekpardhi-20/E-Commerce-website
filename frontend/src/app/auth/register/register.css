@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  background: #FFF4B5; /* soft yellow background */
+  background: hsla(189, 100%, 85%, 0.169); /* soft yellow background */
   padding: 20px;
 }
 

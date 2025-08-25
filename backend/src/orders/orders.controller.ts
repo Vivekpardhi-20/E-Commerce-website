@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, Req, UseGuards, Param } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CheckoutDto } from './dto/checkout.dto';
@@ -16,5 +16,9 @@ export class OrdersController {
   @Get()
   async getOrders(@Req() req) {
     return this.ordersService.getOrders(req.user.userId);
+  }
+  @Post('cancel/:orderId')
+  async cancelOrder(@Req() req, @Param('orderId') orderId: number) {
+    return this.ordersService.cancelOrder(req.user.userId, orderId);
   }
 }

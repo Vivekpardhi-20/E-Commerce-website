@@ -26,11 +26,11 @@ export class RegisterComponent {
       password: this.password
     }).subscribe({
       next: (res) => {
-        console.log("✅ Registered:", res);
-        this.router.navigate(['/login']); // redirect to login page
+        console.log(" Registered:", res);
+        this.router.navigate(['/login']); 
       },
       error: (err) => {
-        console.error("❌ Registration failed:", err);
+        console.error(" Registration failed:", err);
         this.error = "Registration failed. Try again.";
       }
     });

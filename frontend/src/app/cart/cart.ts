@@ -11,7 +11,6 @@ export class CartService {
 
   addToCart(productId: number, quantity: number) {
     const token = this.auth.getToken();
-    console.log('Token being sent:', token);
     return this.http.post(
       `${this.apiUrl}/add`,
       { productId, quantity },

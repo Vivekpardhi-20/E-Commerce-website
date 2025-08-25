@@ -1,0 +1,22 @@
+<div class="profile-container">
+  <h2>Profile Management</h2>
+  <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+    <label for="name">Username</label>
+    <input id="name" formControlName="name" type="text" required minlength="2" />
+    <div class="error" *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+      <small *ngIf="profileForm.get('name')?.errors?.['required']">Username is required.</small>
+      <small *ngIf="profileForm.get('name')?.errors?.['minlength']">Minimum 2 characters required.</small>
+    </div>
+
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" required />
+    <div class="error" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+      <small *ngIf="profileForm.get('email')?.errors?.['required']">Email is required.</small>
+      <small *ngIf="profileForm.get('email')?.errors?.['email']">Enter a valid email.</small>
+    </div>
+
+    <button type="submit" [disabled]="profileForm.invalid || loading">Update Profile</button>
+    <div class="success" *ngIf="success">{{ success }}</div>
+    <div class="error" *ngIf="error">{{ error }}</div>
+  </form>
+</div>

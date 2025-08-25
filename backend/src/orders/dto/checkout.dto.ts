@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
 export class CheckoutDto {
   @IsString() @IsNotEmpty()
@@ -14,6 +14,7 @@ export class CheckoutDto {
   state: string;
 
   @IsString() @IsNotEmpty()
+  @Matches(/^\d{6}$/, { message: 'Postal code must be exactly 6 digits' })
   postalCode: string;
 
   @IsString()

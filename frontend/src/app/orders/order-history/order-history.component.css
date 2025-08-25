@@ -2,21 +2,22 @@
   max-width: 900px;
   margin: 40px auto;
   padding: 1rem 2rem 3rem;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   color: #333;
 }
 
 .order-history-container h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #1356a2; /* dark blue */
+  color: #1a237e;
+  font-size: 2rem;
 }
 
 .loading {
   text-align: center;
-  color: #C4D7FF;
+  color: #4f8cff;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   padding: 2rem 0;
 }
 
@@ -35,7 +36,6 @@
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
   transition: background 0.3s;
 }
 
@@ -44,11 +44,17 @@
 }
 
 .order-card {
-  background: #FFD7C4; /* peach background */
+  background: #f5f5f5;
   border-radius: 12px;
-  box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 18px rgba(0,0,0,0.12);
   padding: 1.5rem 2rem;
   margin-bottom: 2rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.18);
 }
 
 .order-header {
@@ -62,7 +68,7 @@
 
 .order-header h3 {
   margin: 0;
-  color: #1356a2;
+  color: #1a237e;
 }
 
 .status {
@@ -74,24 +80,14 @@
   text-transform: uppercase;
 }
 
-/* Example status colors - adjust or extend as needed */
-.status.Pending {
-  background-color: #f0ad4e; /* orange */
-}
-.status.Shipped {
-  background-color: #5bc0de; /* light blue */
-}
-.status.Delivered {
-  background-color: #5cb85c; /* green */
-}
-.status.Cancelled {
-  background-color: #d9534f; /* red */
-}
+.status.Placed { background-color: #4caf50; }
+.status.Shipped { background-color: #2196f3; }
+.status.Delivered { background-color: #8bc34a; }
+.status.Cancelled { background-color: #f44336; }
 
 .order-card p {
   margin: 0.3rem 0;
   font-size: 0.95rem;
-  color: #333;
 }
 
 .order-card table {
@@ -116,6 +112,31 @@
 .order-card td {
   font-weight: 600;
   color: #333;
+}
+
+.cancel-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 0.8rem 0;
+}
+
+.cancel-btn {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: linear-gradient(135deg, #ff5252, #ff1744);
+  box-shadow: 0 4px 12px rgba(255, 23, 68, 0.3);
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background: linear-gradient(135deg, #ff1744, #ff5252);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 23, 68, 0.4);
 }
 
 .order-total {

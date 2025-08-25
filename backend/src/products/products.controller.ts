@@ -44,7 +44,7 @@ export class ProductsController {
     @UploadedFile() file: any,
     @Body() body: CreateProductDto,
   ) {
-    const imageUrl = `/uploads/${file.filename}`; // path to save in DB
+    const imageUrl = `/uploads/${file.filename}`; 
     return this.productsService.create({ ...body, imageUrl });
   }
 
@@ -54,6 +54,6 @@ export class ProductsController {
     @Param('id') id: string,  
     @Body() updateDto: Partial<CreateProductDto>
   ) {
-    return this.productsService.update(+id, updateDto); // +id converts to number
+    return this.productsService.update(+id, updateDto);
   }
 }
