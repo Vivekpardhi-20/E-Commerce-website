@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService,Product } from '../product';
+import { ProductService } from '../product';
 import { CartService } from '../../cart/cart';
 import { AuthService } from '../../auth/auth';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,20 +11,16 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './product-list.html',
-  styleUrls: ['./product-list.css']
+  styleUrls: ['./product-list.css'],
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = [];
-  loading = true;
-  currentPage = 1;
-  pageSize = 10;
-  get totalPages() {
-    return Math.ceil(this.products.length / this.pageSize);
-  }
-  get paginatedProducts() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.products.slice(start, start + this.pageSize);
-  }
+  products: any[] = [];
+  loading: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPages: number = 1;
+  totalItems: number = 0;
+  showSpinnerOnPageChange: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -34,44 +29,58 @@ export class ProductListComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    const user = this.auth.getUser();
-    if (!user) {
-      this.router.navigate(['/login']);
-      return;
-    }
-    this.loadProducts();
+  ngOnInit(): void {
+    this.loadProducts(false);
   }
 
-  loadProducts() {
-    this.productService.getProducts().subscribe({
-      next: (res: Product[]) => {
-        this.products = res;
-        this.loading = false;
-        this.currentPage = 1;
+  loadProducts(showSpinner: boolean = true): void {
+    this.loading = showSpinner;
+    this.productService.getProducts(this.currentPage, this.pageSize).subscribe({
+      next: (res: any) => {
+        // Show spinner for at least 1 second
+        setTimeout(
+          () => {
+            this.products = res.data;
+            this.totalPages = res.totalPages;
+            this.totalItems = res.totalItems;
+            this.loading = false;
+          },
+          showSpinner ? 1000 : 0
+        );
       },
-      error: (err: any) => console.error('Error loading products', err)
+      error: () => {
+        this.loading = false;
+      },
     });
   }
 
-  goToPage(page: number) {
+  goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
+      this.loadProducts(true);
     }
   }
-  addToCart(productId: number, quantity: number = 1) {
-    const user = this.auth.getUser();
-    if (!user) {
-      alert('Please login first!');
-      this.router.navigate(['/login']);
-      return;
-    }
 
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadProducts(true);
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadProducts(true);
+    }
+  }
+
+  addToCart(productId: number, quantity: number) {
     this.cartService.addToCart(productId, quantity).subscribe({
       next: () => {
         alert('Product added to cart!');
       },
-      error: (err: any) => console.error('Add to cart error', err)
+      error: (err: any) => console.error('Add to cart error', err),
     });
   }
 

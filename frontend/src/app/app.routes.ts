@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home';
+// import { HomeComponent } from './home/home';
 import { LoginComponent } from './auth/login/login';
 import { RegisterComponent } from './auth/register/register';
 import { ProductListComponent } from './products/product-list/product-list';
@@ -12,7 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ProfileComponent } from './users/profile.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  // { path: '', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'products', component: ProductListComponent, canActivate: [AuthGuard] },

@@ -1,15 +1,16 @@
 <section class="product-section">
   <h2>Our Products</h2>
 
+  <!-- Product list -->
   <div class="product-container" *ngIf="!loading; else loadingTpl">
-    <ng-container *ngFor="let product of paginatedProducts">
+    <ng-container *ngFor="let product of products">
       <div class="product-card">
         <div class="product-image">
           <img [src]="product.imageUrl" alt="{{ product.name }}" />
         </div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>
-          <p>{{ product.description | slice:0:80 }}...</p>
+          <p>{{ product.description | slice : 0 : 80 }}...</p>
           <div class="price-stock">
             <span class="price">₹{{ product.price }}</span>
             <span class="stock" [class.out]="product.stock === 0">
@@ -17,30 +18,35 @@
             </span>
           </div>
           <div class="buttons">
-            <button (click)="addToCart(product.id)" [disabled]="product.stock === 0">Add to Cart</button>
+            <button (click)="addToCart(product.id, 1)" [disabled]="product.stock === 0">
+              Add to Cart
+            </button>
             <button (click)="viewProduct(product.id)">View Details</button>
           </div>
         </div>
       </div>
     </ng-container>
-  </div> <!-- ✅ close grid container here -->
+  </div>
 
-  <!-- ✅ pagination is OUTSIDE grid -->
+  <!-- Pagination -->
   <div class="pagination-wrapper" *ngIf="!loading && totalPages > 1">
     <div class="pagination">
       <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
-
       <ng-container *ngFor="let page of [].constructor(totalPages); let i = index">
         <button (click)="goToPage(i + 1)" [class.active]="currentPage === i + 1">
           {{ i + 1 }}
         </button>
       </ng-container>
-
-      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        Next
+      </button>
     </div>
   </div>
 
+  <!-- Spinner while loading -->
   <ng-template #loadingTpl>
-    <p class="loading">Loading products...</p>
+    <div class="spinner-wrapper">
+      <div class="spinner"></div>
+    </div>
   </ng-template>
 </section>

@@ -36,7 +36,6 @@ async getCart(userId: number) {
       throw new NotFoundException('Not enough stock');
     }
 
-    // Check if product is already in cart
     let cartItem = await this.cartRepo.findOne({
       where: { user: { id: userId }, product: { id: productId } },
     });

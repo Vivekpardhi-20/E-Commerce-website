@@ -7,7 +7,8 @@ import {
   UploadedFile,
   UseInterceptors,
   UseGuards,
-  Patch
+  Patch,
+  Query,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -21,8 +22,14 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('pageSize') pageSize: number = 10,
+  ) {
+    return this.productsService.findAllPaginated(
+      Number(page),
+      Number(pageSize),
+    );
   }
 
   @Get(':id')
@@ -31,28 +38,26 @@ export class ProductsController {
   }
 
   @Post('add')
-  @UseInterceptors(FileInterceptor('image', {
-    storage: diskStorage({
-      destination: './uploads',
-      filename: (req, file, cb) => {
-        const filename = Date.now() + '-' + file.originalname;
-        cb(null, filename);
-      },
+  @UseInterceptors(
+    FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          const filename = Date.now() + '-' + file.originalname;
+          cb(null, filename);
+        },
+      }),
     }),
-  }))
-  async create(
-    @UploadedFile() file: any,
-    @Body() body: CreateProductDto,
-  ) {
-    const imageUrl = `/uploads/${file.filename}`; 
+  )
+  async create(@UploadedFile() file: any, @Body() body: CreateProductDto) {
+    const imageUrl = `/uploads/${file.filename}`;
     return this.productsService.create({ ...body, imageUrl });
   }
 
- 
   @Patch(':id')
   async updateProduct(
-    @Param('id') id: string,  
-    @Body() updateDto: Partial<CreateProductDto>
+    @Param('id') id: string,
+    @Body() updateDto: Partial<CreateProductDto>,
   ) {
     return this.productsService.update(+id, updateDto);
   }

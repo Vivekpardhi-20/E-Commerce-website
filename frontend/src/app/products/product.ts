@@ -12,27 +12,34 @@ export interface Product {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private baseUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<any>(`${this.baseUrl}/products`).pipe(
-      map(res =>
-        (res.data || []).map((p: Product) => ({
+getProducts(page: number = 1, pageSize: number = 10): Observable<any> {
+  return this.http
+    .get<any>(`${this.baseUrl}/products?page=${page}&pageSize=${pageSize}`)
+    .pipe(
+      map((res) => ({
+        data: (res.data?.data || []).map((p: Product) => ({
           ...p,
-          imageUrl: `${this.baseUrl}${p.imageUrl}`
-        }))
-      )
+          imageUrl: `${this.baseUrl}${p.imageUrl}`,
+        })),
+        totalPages: res.data?.totalPages || 1,
+        totalItems: res.data?.totalItems || 0,
+        currentPage: res.data?.currentPage || page,
+        pageSize: res.data?.pageSize || pageSize,
+      }))
     );
-  }
+}
+
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<any>(`${this.baseUrl}/products/${id}`).pipe(
-      map(res => {
+      map((res) => {
         const p = res.data || res;
         return { ...p, imageUrl: `${this.baseUrl}${p.imageUrl}` };
       })

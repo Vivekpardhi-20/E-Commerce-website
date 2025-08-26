@@ -1,7 +1,6 @@
 <section class="checkout-container">
   <h2>Place Your Order</h2>
 
-  <!-- Cart Summary (LEFT) -->
   <div class="cart-summary" *ngIf="cart?.items?.length">
     <h3>Order Summary</h3>
     <div class="cart-items">
@@ -20,12 +19,11 @@
     </div>
   </div>
 
-  <!-- Shipping Form (RIGHT) -->
   <div class="address-form" *ngIf="cart?.items?.length">
     <h3>Shipping Address</h3>
     <form (ngSubmit)="placeOrder()" #checkoutForm="ngForm">
 
-      <!-- Address Line 1 -->
+  
       <div class="form-group">
         <label for="addressLine1">Address Line 1*</label>
         <input
@@ -41,14 +39,12 @@
         </div>
       </div>
 
-      <!-- Address Line 2 (Optional) -->
       <div class="form-group">
         <label for="addressLine2">Address Line 2</label>
         <input id="addressLine2" type="text" [(ngModel)]="addressLine2" name="addressLine2" />
       </div>
 
-      <!-- City -->
-      <div class="form-group">
+        <div class="form-group">
         <label for="city">City*</label>
         <input
           id="city"
@@ -63,7 +59,7 @@
         </div>
       </div>
 
-      <!-- State -->
+
       <div class="form-group">
         <label for="state">State*</label>
         <input
@@ -79,7 +75,7 @@
         </div>
       </div>
 
-      <!-- Postal Code -->
+
       <div class="form-group">
         <label for="postalCode">Postal Code*</label>
         <input
@@ -97,7 +93,7 @@
         </div>
       </div>
 
-      <!-- Payment Method -->
+
       <div class="form-group">
         <label for="paymentMethod">Payment Method*</label>
         <select
@@ -115,8 +111,8 @@
         </div>
       </div>
 
-      <!-- Submit Button -->
       <button type="submit" [disabled]="!checkoutForm.form.valid">Place Order</button>
     </form>
   </div>
 </section>
+     
